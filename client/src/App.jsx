@@ -1,8 +1,15 @@
 import { useState, useEffect } from 'react'
 
 import { Input } from "@/components/ui/input"
+<<<<<<< HEAD
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
+=======
+import { Button } from "@/components/ui/button"
+import { Textarea } from "@/components/ui/textarea"
+
+import './App.css'
+>>>>>>> 001203bc28254ee13cf2a8b2780821e5f32090da
 
 function App() {
 
@@ -44,6 +51,7 @@ function App() {
   // },[file])s
 
   return (
+<<<<<<< HEAD
     <>
       <div className="grid w-full max-w-sm items-center gap-1.5">
         <Label htmlFor="fileUpload">File Upload</Label>
@@ -52,6 +60,12 @@ function App() {
 
       </div>    
     </>
+=======
+    <div className="textarea-container">
+      <Textarea placeholder="Type your message here." />
+      <Button>Send message</Button>
+    </div>
+>>>>>>> 001203bc28254ee13cf2a8b2780821e5f32090da
   )
 }
 

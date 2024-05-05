@@ -7,10 +7,14 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "type": "module"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@radix-ui/react-label": "^2.0.2",
+=======
+>>>>>>> 001203bc28254ee13cf2a8b2780821e5f32090da
     "@radix-ui/react-slot": "^1.0.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
