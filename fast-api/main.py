@@ -15,15 +15,28 @@ from langchain.docstore.document import Document
 from langchain.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
+from fastapi.middleware.cors import CORSMiddleware
 import re
+from dotenv import load_dotenv
+from pymilvus import connections, utility
+
+load_dotenv()
 
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173/"],  # Allows all origins, adjust as needed.
+    allow_credentials=True,
+    allow_methods=[""],  # Allows all methods.
+    allow_headers=[""],  # Allows all headers.
+)
+
 CHUNK_SIZE = 1024
 CHUNK_OVERLAP = 128
 
-OCTOAI_API_TOKEN = os.environ["OCTOAI_API_TOKEN"]
+OCTOAI_API_TOKEN = os.getenv("OCTOAI_API_TOKEN")
 
 embeddings = OctoAIEmbeddings(endpoint_url="https://text.octoai.run/v1/embeddings")
 llm = OctoAIEndpoint(
@@ -33,6 +46,11 @@ llm = OctoAIEndpoint(
     temperature=0.1,
     top_p=0.9,
 )
+
+
+def print_docs(docs):
+    for doc in docs:
+        print(doc.page_content)
 
 
 def clean_string(input_string):
@@ -104,11 +122,14 @@ async def search_document(query: str, collection_name: str):
         auto_id=True,
     )
     retriever = vector_store.as_retriever(k=5)
+    docs = retriever.invoke(query)
+    print(docs)
 
-    template = """You are an assistant for question-answering tasks. Use the following pieces of retrieved context to answer the question. If you don't know the answer, just say that you don't know. Use three sentences maximum and keep the answer concise.
-Question: {question} 
-Context: {context} 
-Answer:"""
+    template = """You are an AI assistant helping users extract information from documents provided as CONTEXT. You are expected to produce an exhaustive answer to the question asked in QUESTION.
+    QUESTION: {question} 
+    CONTEXT: {context} 
+    ANSWER:"""
+
     prompt = ChatPromptTemplate.from_template(template)
     chain = (
         {"context": retriever, "question": RunnablePassthrough()}
