@@ -1,4 +1,4 @@
-.env
+fast-api/.env
 volumes:
   - ./data:/data
   - ./config:/config
