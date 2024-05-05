@@ -95,3 +95,28 @@
   padding: 10px 0; /* Adds some padding around the buttons */
   box-sizing: border-box;
 }
+
+.textarea-container {
+  display: flex; /* Establishes a flex container */
+  align-items: flex-start; /* Aligns children at the start of the container vertically */
+  width: 100%; /* Ensures the container fills the horizontal space of its parent */
+  padding-top: 10px; /* Adds some space at the top inside the container */
+  padding-bottom: 55vh;
+}
+
+.textarea-container input { /* Target the input element specifically */
+  flex-grow: 1; /* Allows the input to grow and fill available space */
+  width: 100%; /* Limits the width to 80% of its flex container */
+  margin-right: 10px; /* Adds some space between the input and the button */
+  padding: 8px 10px; /* Adds internal space making text not touch the borders */
+  border: 2px solid #ccc; /* Sets a solid border with a light grey color */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Adds a subtle shadow below the input */
+  border-radius: 4px; /* Optionally adds rounded corners to the input field */
+}
+
+.textarea-container button {
+  flex-grow: 0; /* Prevents the button from growing to fill the space */
+  flex-shrink: 0; /* Prevents the button from shrinking */
+  width: auto; /* Adjust the width of the button as needed */
+  padding: 5px 10px; /* Adjust padding to control the size of the button */
+}

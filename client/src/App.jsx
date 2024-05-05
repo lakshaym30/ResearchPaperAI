@@ -9,10 +9,6 @@ import Query from './components/Query'
 import Upload from './components/Upload'
 import { Header } from './components/Header'
 
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Button } from "@/components/ui/button"
-
 import './App.css'
 
 function App() {
@@ -55,6 +51,7 @@ function App() {
     }
   }
 
+  
   // useEffect(() => {
   //   console.log(file)
   // },[file])s
