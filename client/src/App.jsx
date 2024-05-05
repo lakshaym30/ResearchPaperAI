@@ -1,9 +1,17 @@
 import { useState, useEffect } from 'react'
+import { 
+  BrowserRouter as Router,
+  Routes,
+  Route,
+ } from 'react-router-dom'
+
+import Query from './components/Query'
+import Upload from './components/Upload'
+import { Header } from './components/Header'
 
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
 
 import './App.css'
 
@@ -48,16 +56,14 @@ function App() {
 
   return (
     <>
-      <div className="grid w-full max-w-sm items-center gap-1.5">
-        <Label htmlFor="fileUpload">File Upload</Label>
-        <Input id="fileUpload" type="file" onChange={handleFileChange}/>
-        <Button onClick={handleFileUpload}>Submit PDF</Button>
-
-      </div>    
-      <div className="textarea-container">
-        <Textarea placeholder="Type your message here." />
-        <Button>Send message</Button>
-      </div>
+      <Router>
+        <Routes>
+          <Route element={<Header />}>
+            <Route path='/' element={<Upload />}/>
+            <Route path='Chat' element={<Query />}/>
+          </Route>
+        </Routes>
+      </Router>
     </>
   )
 }

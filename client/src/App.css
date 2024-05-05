@@ -1,8 +1,10 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
   padding: 2rem;
-  text-align: center;
 }
 
 .logo {
@@ -39,4 +41,47 @@
 
 .read-the-docs {
   color: #888;
+}
+
+
+.file-upload {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 200px; /* Adjust the maximum width as needed */
+}
+
+.file-upload label{
+  font-size: larger;
+  text-align: center;
+  margin: 6px;
+}
+
+
+.file-upload button {
+  margin-top: 8px; /* Add some spacing between the textarea and the button */
+}
+
+.textarea-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 768px; /* Adjust the maximum width as needed */
+}
+
+.textarea-container label {
+  font-size: larger;
+  margin-top: 10px;
+}
+
+
+.textarea-container textarea {
+  margin-top: 10px;
+  height: 200px; /* Set the desired height for the textarea */
+  resize: vertical; /* Prevent the textarea from being resized */
+  padding: 8px; /* Add some padding for better readability */
+}
+
+.textarea-container button {
+  margin-top: 8px; /* Add some spacing between the textarea and the button */
 }
