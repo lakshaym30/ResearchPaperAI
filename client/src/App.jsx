@@ -9,10 +9,6 @@ import Query from './components/Query'
 import Upload from './components/Upload'
 import { Header } from './components/Header'
 
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Button } from "@/components/ui/button"
-
 import './App.css'
 
 function App() {
@@ -33,7 +29,7 @@ function App() {
     formData.append('file', file)
 
     try{
-      const response = await fetch('',{
+      const response = await fetch('http://127.0.0.1:8000/upload',{
         method: 'POST',
         body: formData
       })
@@ -50,6 +46,7 @@ function App() {
     }
   }
 
+  
   // useEffect(() => {
   //   console.log(file)
   // },[file])s
