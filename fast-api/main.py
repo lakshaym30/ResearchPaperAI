@@ -19,6 +19,9 @@ from fastapi.middleware.cors import CORSMiddleware
 import re
 from dotenv import load_dotenv
 from pymilvus import connections, utility
+from langchain_community.document_loaders import PyPDFLoader
+from pypdf import PdfReader
+
 
 load_dotenv()
 
@@ -73,25 +76,33 @@ def get_parsed_document_text(elements):
 
 
 @app.post("/upload")
-async def upload_document(document: UploadFile = File(...)):
+async def upload_document(document: UploadFile = File(...), tables: bool = False):
     filename = document.filename
     content = await document.read()
     file_like_object = BytesIO(content)
+    docs = []
+    if tables:
+        elements = partition_pdf(
+            file=file_like_object,
+            infer_table_structure=True,
+            strategy="hi_res",
+        )
+        document_text = get_parsed_document_text(elements)
+        doc = Document(page_content=document_text)
+        docs.append(doc)
+    else:
+        reader = PdfReader(file_like_object)
+        number_of_pages = len(reader.pages)
+        for page in reader.pages:
+            text = page.extract_text()
+            doc = Document(page_content=text)
+            docs.append(doc)
 
-    elements = partition_pdf(
-        file=file_like_object,
-        infer_table_structure=True,
-        strategy="hi_res",
-    )
-    document_text = get_parsed_document_text(elements)
-
-    doc = Document(page_content=document_text)
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=CHUNK_SIZE,
         chunk_overlap=CHUNK_OVERLAP,
     )
-    splits = text_splitter.split_documents([doc])
-    # print(splits)
+    splits = text_splitter.split_documents(docs)
     collection_name = clean_string(filename)
     vector_store = Milvus(
         embeddings,
