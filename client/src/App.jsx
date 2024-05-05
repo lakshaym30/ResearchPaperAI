@@ -22,21 +22,23 @@ function App() {
     }
 
     const formData = new FormData()
-    formData.append('document', file)
+    formData.append('file', file)
 
-    try {
-      const response = await fetch('http://127.0.0.1:8000/upload', {
+    try{
+      const response = await fetch('',{
         method: 'POST',
-        body: formData, 
-      });
-      if (response.ok) {
-        const result = await response.json();
-        console.log(result);
-      } else {
-        throw new Error('Network response was not ok.');
+        body: formData
+      })
+
+      if(!response.ok){
+        throw new Error('Network response was not ok')
       }
-    } catch (error) {
-      console.error('There was a problem with your fetch operation:', error);
+
+      const data = await response.json()
+      console.log(data)
+
+    }catch(error){
+      console.error('There was a problem with your fetch operation', error)
     }
   }
 

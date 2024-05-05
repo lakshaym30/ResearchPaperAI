@@ -40,19 +40,3 @@
 .read-the-docs {
   color: #888;
 }
-
-.textarea-container {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: 400px; /* Adjust the maximum width as needed */
-}
-
-.textarea-container textarea {
-  min-width:auto;
-  padding: 8px; /* Add some padding for better readability */
-}
-
-.textarea-container button {
-  margin-top: 8px; /* Add some spacing between the textarea and the button */
-}
