@@ -48,13 +48,13 @@ function App() {
 
   return (
     <>
-      <div className="grid w-full max-w-sm items-center gap-1.5">
+      <div className="file-upload">
         <Label htmlFor="fileUpload">File Upload</Label>
         <Input id="fileUpload" type="file" onChange={handleFileChange}/>
         <Button onClick={handleFileUpload}>Submit PDF</Button>
-
       </div>    
       <div className="textarea-container">
+        <Label htmlFor="TextInput">Text Input</Label>
         <Textarea placeholder="Type your message here." />
         <Button>Send message</Button>
       </div>
