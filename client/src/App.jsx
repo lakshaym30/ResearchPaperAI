@@ -61,10 +61,8 @@ function App() {
       <Router>
       <Header />
         <Routes>
-          <Route element={<Header />}>
-            <Route path='/' element={<Upload handleFileUpload={handleFileUpload} handleFileChange={handleFileChange} loading={loading} />}/>
-            <Route path='Chat' element={<Query  />}/>
-          </Route>
+          <Route path='/' element={<Upload handleFileUpload={handleFileUpload} handleFileChange={handleFileChange} loading={loading} summary={summary} />}/>
+          <Route path='Chat' element={<Query  />}/>
         </Routes>
       </Router>
     </>
