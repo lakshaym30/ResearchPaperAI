@@ -1,24 +1,25 @@
 import { Link, NavLink, Outlet } from 'react-router-dom'
+import {
+    NavigationMenu,
+    NavigationMenuContent,
+    NavigationMenuIndicator,
+    NavigationMenuItem,
+    NavigationMenuLink,
+    NavigationMenuList,
+    NavigationMenuTrigger,
+    NavigationMenuViewport,
+  } from "@/components/ui/navigation-menu"
 
-export function Header(props){
-
-
-    
+export function Header(props){    
     return (
-        <>
-            <header>
-                <nav>
-                    <ul>
-                        <li>
-                            <NavLink to="/" >Upload</NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="chat">Chat</NavLink>
-                        </li>
-                    </ul>
-                </nav>
-            </header>
-            <Outlet />
-        </>
+        <div className="nav-header">
+        <NavigationMenu>
+        <NavigationMenuList>
+            <NavigationMenuItem><NavigationMenuLink><NavLink to="/" >Upload</NavLink></NavigationMenuLink></NavigationMenuItem>
+            <NavigationMenuItem><NavigationMenuLink><NavLink to="chat" >Chat</NavLink></NavigationMenuLink></NavigationMenuItem>
+        </NavigationMenuList>
+        </NavigationMenu>
+        </div>
+    
     )
 }

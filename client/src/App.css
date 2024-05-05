@@ -85,3 +85,13 @@
 .textarea-container button {
   margin-top: 8px; /* Add some spacing between the textarea and the button */
 }
+
+.nav-header {
+  display: flex;
+  justify-content: center; /* Centers buttons horizontally */
+  position: fixed; /* Fixes the nav at the top */
+  top: 0;
+  width: 100%;
+  padding: 10px 0; /* Adds some padding around the buttons */
+  box-sizing: border-box;
+}

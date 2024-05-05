@@ -57,11 +57,10 @@ function App() {
   return (
     <>
       <Router>
+      <Header />
         <Routes>
-          <Route element={<Header />}>
-            <Route path='/' element={<Upload />}/>
-            <Route path='Chat' element={<Query />}/>
-          </Route>
+          <Route path='/' element={<Upload />}/>
+          <Route path='chat' element={<Query />}/>
         </Routes>
       </Router>
     </>
