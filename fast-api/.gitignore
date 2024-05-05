@@ -1,1 +1,46 @@
 .env
+volumes:
+  - ./data:/data
+  - ./config:/config
+  - ./logs:/logs
+  - ./plugins:/plugins
+  - ./themes:/themes
+  - ./uploads:/uploads
+  - ./public:/public
+  - ./node_modules:/node_modules
+  - ./content:/content
+  - ./core:/core
+  - ./versions:/versions
+  - ./scripts:/scripts
+  - ./tests:/tests
+  - ./build:/build
+  - ./casper:/casper
+  - ./default.hbs:/default.hbs
+  - ./Gruntfile.js:/Gruntfile.js
+  - ./index.js:/index.js
+  - ./LICENSE:/LICENSE
+  - ./package.json:/package.json
+  - ./README.md:/README.md
+  - ./yarn.lock:/yarn.lock
+  - ./content/themes:/content/themes
+  - ./content/apps:/content/apps
+  - ./content/adapters:/content/adapters
+  - ./content/middleware:/content/middleware
+  - ./content/notifications:/content/notifications
+  - ./content/overrides:/content/overrides
+  - ./content/schedulers:/content/schedulers
+  - ./content/services:/content/services
+  - ./content/utils:/content/utils
+  - ./content/validators:/content/validators
+  - ./content/versioning:/content/versioning
+  - ./content/versions:/content/versions
+  - ./content/ghost-api:/content/ghost-api
+  - ./content/ghost-api/v0.1:/content/ghost-api/v0.1
+  - ./content/ghost-api/v0.1/admin:/content/ghost-api/v0.1/admin
+  - ./content/ghost-api/v0.1/content:/content/ghost-api/v0.1/content
+  - ./content/ghost-api/v0.1/frontend:/content/ghost-api/v0.1/frontend
+  - ./content/ghost-api/v0.1/frontend/assets:/content/ghost-api/v0.1/frontend/assets
+  - ./content/ghost-api/v0.1/frontend/assets/css:/content/ghost-api/v0.1/frontend/assets/css
+  - ./content/ghost-api/v0.1/frontend/assets/fonts:/content/ghost-api/v0.1/frontend/assets/fonts
+  - ./content/ghost-api/v0.1/frontend/assets/img:/
+dev
