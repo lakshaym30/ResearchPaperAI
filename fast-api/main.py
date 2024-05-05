@@ -30,7 +30,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173/"],  # Allows all origins, adjust as needed.
+    allow_origins=["http://localhost:5173"],  # Allows all origins, adjust as needed.
     allow_credentials=True,
     allow_methods=[""],  # Allows all methods.
     allow_headers=[""],  # Allows all headers.
@@ -112,10 +112,20 @@ async def upload_document(document: UploadFile = File(...), tables: bool = False
     )
 
     vector_store.add_documents(splits)
+    retriever = vector_store.as_retriever(k=5)
+
+    prompt_template = """Write a concise summary of the following:
+    "{context}"
+    CONCISE SUMMARY:"""
+    prompt = ChatPromptTemplate.from_template(prompt_template)
+
+    chain = {"context": retriever} | prompt | llm | StrOutputParser()
+    summary = chain.invoke("\n".join([doc.page_content for doc in splits[:3]]))
 
     return {
-        "Success": "Document Uploaded Successfully",
+        "success": "Document Uploaded Successfully",
         "collection_name": collection_name,
+        "summary": summary,
     }
     # parse document using pypdf
     # chunk document using langchain

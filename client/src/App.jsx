@@ -18,6 +18,8 @@ import './App.css'
 function App() {
 
   const [file, setFile] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [summary, setSummary] = useState('')  
 
   function handleFileChange(event){
     setFile(event.target.files[0])
@@ -28,12 +30,13 @@ function App() {
       alert('Please select a file')
       return
     }
+    setLoading(true)
 
     const formData = new FormData()
-    formData.append('file', file)
+    formData.append('document', file)
 
     try{
-      const response = await fetch('',{
+      const response = await fetch('http://127.0.0.1:8000/upload',{
         method: 'POST',
         body: formData
       })
@@ -43,9 +46,11 @@ function App() {
       }
 
       const data = await response.json()
+      setSummary(data.summary)
       console.log(data)
-
+      setLoading(false)
     }catch(error){
+      setLoading(false)
       console.error('There was a problem with your fetch operation', error)
     }
   }
@@ -59,8 +64,10 @@ function App() {
       <Router>
       <Header />
         <Routes>
-          <Route path='/' element={<Upload />}/>
-          <Route path='chat' element={<Query />}/>
+          <Route element={<Header />}>
+            <Route path='/' element={<Upload handleFileUpload={handleFileUpload} handleFileChange={handleFileChange} loading={loading} />}/>
+            <Route path='Chat' element={<Query  />}/>
+          </Route>
         </Routes>
       </Router>
     </>
