@@ -1,3 +1,7 @@
 fast-api/.env
+
+node_modules
+
 volumes
+
 dev
