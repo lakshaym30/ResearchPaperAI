@@ -10,7 +10,6 @@ from langchain_community.embeddings import OctoAIEmbeddings
 from langchain_community.llms.octoai_endpoint import OctoAIEndpoint
 import os
 from pymilvus import connections, utility
-from unstructured.partition.pdf import partition_pdf
 from langchain.docstore.document import Document
 from langchain.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
@@ -18,10 +17,8 @@ from langchain_core.output_parsers import StrOutputParser
 from fastapi.middleware.cors import CORSMiddleware
 import re
 from dotenv import load_dotenv
-from pymilvus import connections, utility
 from langchain_community.document_loaders import PyPDFLoader
 from pypdf import PdfReader
-
 
 load_dotenv()
 
@@ -30,7 +27,8 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # Allows all origins, adjust as needed.
+    # Allows all origins, adjust as needed.
+    allow_origins=["http://localhost:5173"],
     allow_credentials=True,
     allow_methods=[""],  # Allows all methods.
     allow_headers=[""],  # Allows all headers.
@@ -41,7 +39,8 @@ CHUNK_OVERLAP = 128
 
 OCTOAI_API_TOKEN = os.getenv("OCTOAI_API_TOKEN")
 
-embeddings = OctoAIEmbeddings(endpoint_url="https://text.octoai.run/v1/embeddings")
+embeddings = OctoAIEmbeddings(
+    endpoint_url="https://text.octoai.run/v1/embeddings")
 llm = OctoAIEndpoint(
     model="llama-2-13b-chat-fp16",
     max_tokens=1024,
@@ -81,22 +80,12 @@ async def upload_document(document: UploadFile = File(...), tables: bool = False
     content = await document.read()
     file_like_object = BytesIO(content)
     docs = []
-    if tables:
-        elements = partition_pdf(
-            file=file_like_object,
-            infer_table_structure=True,
-            strategy="hi_res",
-        )
-        document_text = get_parsed_document_text(elements)
-        doc = Document(page_content=document_text)
+    reader = PdfReader(file_like_object)
+    number_of_pages = len(reader.pages)
+    for page in reader.pages:
+        text = page.extract_text()
+        doc = Document(page_content=text)
         docs.append(doc)
-    else:
-        reader = PdfReader(file_like_object)
-        number_of_pages = len(reader.pages)
-        for page in reader.pages:
-            text = page.extract_text()
-            doc = Document(page_content=text)
-            docs.append(doc)
 
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=CHUNK_SIZE,
