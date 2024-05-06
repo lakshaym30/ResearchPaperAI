@@ -21,6 +21,7 @@ from dotenv import load_dotenv
 from pymilvus import connections, utility
 from langchain_community.document_loaders import PyPDFLoader
 from pypdf import PdfReader
+from langchain_chroma import Chroma
 
 
 load_dotenv()
@@ -77,6 +78,7 @@ def get_parsed_document_text(elements):
 
 @app.post("/upload")
 async def upload_document(document: UploadFile = File(...), tables: bool = False):
+    print("uploading document")
     filename = document.filename
     content = await document.read()
     file_like_object = BytesIO(content)
@@ -91,6 +93,7 @@ async def upload_document(document: UploadFile = File(...), tables: bool = False
         doc = Document(page_content=document_text)
         docs.append(doc)
     else:
+        print("pyPDF")
         reader = PdfReader(file_like_object)
         number_of_pages = len(reader.pages)
         for page in reader.pages:
@@ -102,16 +105,25 @@ async def upload_document(document: UploadFile = File(...), tables: bool = False
         chunk_size=CHUNK_SIZE,
         chunk_overlap=CHUNK_OVERLAP,
     )
+    print("splitting docs")
     splits = text_splitter.split_documents(docs)
     collection_name = clean_string(filename)
-    vector_store = Milvus(
+    print("adding docs")
+    vector_store = Milvus.from_documents(
+        splits,
         embeddings,
+        drop_old=True,
         connection_args={"host": "localhost", "port": 19530},
-        collection_name=collection_name,
-        auto_id=True,
+        collection_name=collection_name + "_collection",
+        # auto_id=True,
     )
+    # print(splits)
+    # try:
+    #     # vector_store.add_documents(splits)
+    # except Exception as e:
+    #     print(e)
 
-    vector_store.add_documents(splits)
+    print("docs added")
     retriever = vector_store.as_retriever(k=5)
 
     prompt_template = """Write a concise summary of the following:
@@ -135,7 +147,7 @@ async def upload_document(document: UploadFile = File(...), tables: bool = False
 
 @app.post("/search")
 async def search_document(query: str, collection_name: str):
-
+    # vector_store = Chroma()
     vector_store = Milvus(
         embeddings,
         connection_args={"host": "localhost", "port": 19530},
@@ -179,4 +191,4 @@ async def get_collection_names():
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="127.0.0.1", port=8000)
